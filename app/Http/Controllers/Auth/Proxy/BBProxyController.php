@@ -10,10 +10,17 @@ use Illuminate\Support\Facades\Http;
 class BBProxyController extends Controller
 {
     //
-    private $basic = "Basic #######";
+    private $basic = null; // env('BB_BASIC');
 
     private $baseURL = 'https://api.hm.bb.com.br/cobrancas/v2';
-    private $apiKey = '#####';
+    private $apiKey = null; //env('BB_API_KEY');
+
+
+    public function __construct()
+    {
+        $this->basic = env('BB_BASIC');
+        $this->apiKey = env('BB_API_KEY');
+    }
     public function getToken(Request $request){
 
         //dd($request->all());
