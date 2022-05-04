@@ -47,9 +47,6 @@ class BBProxyController extends Controller
     }
 
     public function boletos(Request $request){
-        if(!Cache::has('apiToken')){
-            $this->getAndStoreToken();
-        }
 
         $token = Cache::get('apiToken');
 
@@ -57,7 +54,6 @@ class BBProxyController extends Controller
 
         //return response()->json(['pagador' => $data['pagador']]);
         //dd($data['numeroConvenio']);
-
 
         $response = Http::withHeaders(
             [
@@ -70,31 +66,9 @@ class BBProxyController extends Controller
              json_encode($data )
         );
 
-
-
-
-
         return json_decode($response->getBody()->getContents(), JSON_UNESCAPED_SLASHES);
     }
 
 
-    private function getAndStoreToken(){
-        $response = Http::withHeaders(
-            [
-                'Authorization' => $this->basic,
 
-            ]
-        )->acceptJson()
-        ->asForm()
-        ->post('https://oauth.hm.bb.com.br/oauth/token',
-            [
-                'grant_type' => "client_credentials",
-                'scope' => "cobrancas.boletos-info cobrancas.boletos-requisicao",
-            ]
-        );
-
-        $tokenData = json_decode($response->getBody()->getContents());
-
-        Cache::put('apiToken',$tokenData->access_token, 9);
-    }
 }

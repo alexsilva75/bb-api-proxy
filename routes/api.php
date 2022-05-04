@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('/v1/token', [\App\Http\Controllers\Auth\Proxy\BBProxyController::class, 'getToken']);
-Route::post('/v1/boletos', [\App\Http\Controllers\Auth\Proxy\BBProxyController::class, 'boletos']);
+Route::post('/v1/boletos', [\App\Http\Controllers\Auth\Proxy\BBProxyController::class, 'boletos'])->middleware('check.bb.token');
